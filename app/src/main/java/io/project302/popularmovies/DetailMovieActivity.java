@@ -42,7 +42,6 @@ public class DetailMovieActivity extends AppCompatActivity {
         mDetailActivityReleaseDate.setText(movie.getReleaseDate());
 
         // Ratings
-        Log.d(TAG, "Ratings: " + (Float.valueOf(movie.getRating())/2));
         mDetailActivityRatings = findViewById(R.id.detail_activity_ratings);
         mDetailActivityRatings.setRating(Float.valueOf(movie.getRating())/2);
 

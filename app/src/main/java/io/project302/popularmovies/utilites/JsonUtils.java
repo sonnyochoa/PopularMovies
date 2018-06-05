@@ -44,13 +44,10 @@ public class JsonUtils {
         JSONObject movieJson = new JSONObject(movieJsonStr);
 
         JSONArray movieArray = movieJson.getJSONArray(TMDB_RESULTS);
-        Log.d(TAG, "movieArray.length(): " + movieArray.length());
 
         parsedMovieData = new ArrayList<>();
 
         for (int i = 0; i < movieArray.length(); i++) {
-            Log.d(TAG, " ");
-            Log.d(TAG, "-== NEW MOVIE ==-");
             String title;
             String moviePoster;
             String synopsis;
@@ -62,15 +59,8 @@ public class JsonUtils {
             title = movieDetail.getString(TMDB_TITLE);
             moviePoster = movieDetail.getString(TMDB_POSTER);
             synopsis = movieDetail.getString(TMDB_SYNOPSIS);
-            Log.d(TAG, "synopsis: " + synopsis);
             rating = movieDetail.getString(TMDB_RATING);
             releaseDate = movieDetail.getString(TMDB_RELEASE_DATE);
-
-            String jsonMovieDescription = title + " :: " + moviePoster + " :: " + synopsis + " :: " +
-                    rating + " :: " + releaseDate;
-            Log.d(TAG, jsonMovieDescription);
-            Log.d(TAG, "-== END ==-");
-            Log.d(TAG, " ");
 
             parsedMovieData.add(new Movie(title, moviePoster, synopsis, rating, releaseDate));
         }

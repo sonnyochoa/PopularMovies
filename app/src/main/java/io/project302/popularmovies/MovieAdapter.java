@@ -21,12 +21,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     private final MovieAdapterOnClickHandler mClickHandler;
 
     public interface MovieAdapterOnClickHandler{
-//        void onClick(String movie);
         void onClick(Parcelable movie);
     }
 
-    public MovieAdapter(/*List<Movie> movieList,*/ MovieAdapterOnClickHandler clickHandler) {
-        //this.mMovieData = movieList;
+    public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
+
         mClickHandler = clickHandler;
     }
 
@@ -43,7 +42,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
-//            String movieDetail = mMovieData.get(adapterPosition).getTitle();
             Parcelable movieDetail = mMovieData.get(adapterPosition);
             mClickHandler.onClick(movieDetail);
         }
@@ -57,23 +55,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         int gridColsNum = view.getContext().getResources().getInteger(R.integer.grid_number_cols);
         view.getLayoutParams().height = (int) (parent.getWidth() / gridColsNum *
                 Movie.POSTER_ASPECT_RATIO);
-        Log.d(TAG, "poster height: " + view.getLayoutParams().height);
+
         return new MovieAdapterViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder holder, int position) {
         String posterPath = mMovieData.get(position).getMoviePoster();
-        Log.d(TAG, "poster path: " + posterPath);
         Context context = holder.mMovieImageView.getContext();
-        Log.d(MovieAdapter.class.getSimpleName(), "context: " + context);
         Picasso.with(context).load(posterPath).into(holder.mMovieImageView);
-        //holder.mMovieImageView.setText(animal);
     }
 
     @Override
     public int getItemCount() {
-        //Log.d(MovieAdapter.class.getSimpleName(), "mMovieData: " + mMovieData.size());
         if (null == mMovieData) return 0;
         return mMovieData.size();
     }
@@ -84,8 +78,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     public void setMovieData(List<Movie> movieData) {
         mMovieData = movieData;
-        Log.d(TAG, "mMovieData SIZE: " + mMovieData.size());
         notifyDataSetChanged();
-        Log.d(TAG, "setMovieData called");
     }
 }

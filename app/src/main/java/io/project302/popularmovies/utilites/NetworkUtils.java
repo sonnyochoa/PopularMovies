@@ -27,7 +27,6 @@ public final class NetworkUtils {
 
 
     public static URL buildUrl(String sortQuery) {
-        Log.d(TAG, "SORT QUERY: " + sortQuery);
         Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
                     .appendQueryParameter(API_PARAM, api_key)
                     .build();
@@ -46,13 +45,10 @@ public final class NetworkUtils {
             e.printStackTrace();
         }
 
-        Log.v(TAG, "Built URL: " + url);
-
         return url;
     }
 
     public static URL buildPosterUrl(String posterPath) {
-        Log.d(TAG, "Movie Poster Path: " + posterPath);
         Uri builtUri = Uri.parse(POSTER_BASE_URL).buildUpon()
                 .appendPath("w185")
                 .appendEncodedPath(posterPath)
@@ -65,8 +61,6 @@ public final class NetworkUtils {
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-
-        Log.v(TAG, "Built URL: " + url);
 
         return url;
     }

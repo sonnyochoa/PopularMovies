@@ -24,23 +24,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     private MovieAdapter mMovieAdapter;
     private List<Movie> mMovies;
 
+    private final String DEFAULT_MOVIE_SORTING = "popular";
+    private final String TOP_RATED = "top_rated";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mRecyclerView = findViewById(R.id.recyclerview_movies);
-        //int numOfColumns = Utilities.calculateNumberOfColumns(this);
-        //Log.d(MainActivity.class.getSimpleName(), "numOfColumns: " + numOfColumns);
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
 
-        /*gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return 2;
-            }
-        });
-*/
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
 
@@ -48,17 +43,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mRecyclerView.setAdapter(mMovieAdapter);
 
-        loadMovies("popular");
+        loadMovies(DEFAULT_MOVIE_SORTING);
     }
 
     private void loadMovies(String sortingOrder) {
-        String popular = "popular";
         new FetchMoviesTask().execute(sortingOrder);
     }
 
     @Override
     public void onClick(Parcelable movie) {
-        //Toast.makeText(this, movie, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, DetailMovieActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable("io.project302.popularmovies.Movie", movie);
@@ -77,11 +70,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.popular:
-                loadMovies("popular");
+                loadMovies(DEFAULT_MOVIE_SORTING);
                 return true;
 
             case R.id.top_rated:
-                loadMovies("top_rated");
+                loadMovies(TOP_RATED);
                 return true;
 
             default:
@@ -99,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             if (params.length == 0) return null;
 
             String sort = params[0];
-            Log.d(TAG, "sort: " + sort);
 
             URL movieRequestUrl = NetworkUtils.buildUrl(sort);
 
@@ -108,10 +100,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
                 mMovies = JsonUtils.getSimpleMovieStringsFromJson(MainActivity.this,
                         jsonMovieResponse);
-
-                Log.d(TAG, "mMovies.size(): " + mMovies.size());
-
-                Log.d(TAG, "doInBackground: FINISHED SUCCESSFULLY");
                 return mMovies;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -122,9 +110,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         @Override
         protected void onPostExecute(List movieData) {
             if (movieData != null) {
-                Log.d(TAG, "movieData SIZE: " + movieData.size());
                 mMovieAdapter.setMovieData(movieData);
-                Log.d(TAG, "onPostExecute: FINISHED SUCCESSFULLY");
             }
         }
 
